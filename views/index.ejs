@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar text-light bg-dark">
+        <span class="navbar-brand">Task list</span>
+        <form class="form-inline">
+            <button class="btn btn-outline-warning" data-toggle="modal" data-target="#add_card" type="button">Add card</button>
+        </form>
+    </nav>
+    <div class="container-fluid pt-3">
+        <div class="d-flex flex-wrap cards">
+          
+            <% for(var i = 0; i < cards.length; i++) {%>
+            <div class="card m-2" style="width: 16rem;" data-id="<%=cards[i]._id%>" data-index="<%=i%>">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= cards[i].title %>
+                    </h5>
+                    <p class="card-descr">
+                        <%= cards[i].descr %>
+                    </p>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+    </div>
+
+    <!--Modals-->
+    <div id="add_card" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <form class="new_card">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new card</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="descr">Description</label>
+                            <textarea class="form-control" name="descr" id="descr" placeholder="Description" rows="4"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-success add_list">Add list</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger delete_card">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary add_card">Add card</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--END Modals-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="js/Sortable.js"></script>
+    <script src="js/index.js"></script>
+
+</body>
+
+</html>
