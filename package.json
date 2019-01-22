@@ -10,6 +10,7 @@
   "author": "Angelina",
   "license": "ISC",
   "dependencies": {
+    "editable-content": "^3.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mongodb": "^3.1.12",

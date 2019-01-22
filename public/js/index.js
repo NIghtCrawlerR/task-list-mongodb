@@ -7,6 +7,8 @@ var Card = {
     add: function (formEl) {
         if (cardId == 0) {
             var data = this.createData(formEl)
+            console.log(data)
+
             $.ajax({
                 url: "cards",
                 contentType: "application/json",
@@ -68,10 +70,17 @@ var Card = {
     },
     createData: function (formEl) {
         var data = {}
+        var invalid = false
         var inputs = formEl.find('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset]');
         $(inputs).each(function () {
+            if($(this).attr('required') && !$(this).val()) {
+                $(this).addClass('emptyval')
+                invalid = true
+                return !1
+            }
             data[$(this).attr('name')] = $(this).val()
         });
+        if(invalid) return !1
         return data
     },
     reset: function (formEl) {
@@ -113,14 +122,13 @@ deleteBtn.click(function () {
             else return
         });
 })
-
-card.click(function (e) {
+$(document).on('click', '.card', function(){
     var id = $(this).data('id')
     Card.get(id)
 })
 
 $('.add_list').click(function () {
-    $(this).before(`<div class="form-group"><input type="text" class="form-control mb-3 task-field" name="task"></div>`)
+    $(this).before(`<div class="form-group"><editable-content class='list-name'>List name</editable-content><input type="text" class="form-control mb-3 task-field" name="task"></div>`)
 })
 
 function rand() {
@@ -142,6 +150,13 @@ var sortable = Sortable.create(el, {
         console.log(evt)
     }
 });
+
+//const element = document.querySelector('.list-name');
+$(document).on('edit', '.list-name', function(e){
+  console.log(e.target.innerHTML); // the new value
+    console.log(e.target.previousInnerHTML); // old value
+})
+
 
 var data = {
     'title': '',
