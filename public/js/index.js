@@ -64,6 +64,7 @@ var Card = {
                 for (var key in data) {
                     $('#add_card').find("input[name=" + key + "], textarea[name=" + key + "]").val(data[key])
                 }
+                if (data.hasOwnProperty('list')) Card.genList(data['list'])
                 $('#add_card').modal('show')
             }
         })
@@ -71,16 +72,24 @@ var Card = {
     createData: function (formEl) {
         var data = {}
         var invalid = false
-        var inputs = formEl.find('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset]');
+        //var inputs = formEl.find('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset]');
+        var inputs = formEl.find('[name=data]')
+        var list = formEl.find('[name=data_list]')
         $(inputs).each(function () {
-            if($(this).attr('required') && !$(this).val()) {
+            if ($(this).attr('required') && !$(this).val()) {
                 $(this).addClass('emptyval')
                 invalid = true
                 return !1
             }
-            data[$(this).attr('name')] = $(this).val()
+            data[$(this).data('field')] = $(this).val()
         });
-        if(invalid) return !1
+        data['list'] = {}
+        $(list).each(function () {
+            var fName = $(this).data('field')
+            if (data['list'][fName] == undefined) data['list'][fName] = [$(this).val()]
+            else data['list'][fName].push($(this).val())
+        })
+        if (invalid) return !1
         return data
     },
     reset: function (formEl) {
@@ -88,6 +97,7 @@ var Card = {
         $(inputs).each(function () {
             $(this).val('')
         });
+        formEl.find('.task-list').remove()
     },
     render: function (data) {
         var html = `<div class="card m-2" style="width: 16rem;" data-id="${data._id}">
@@ -103,8 +113,30 @@ var Card = {
             console.log(data)
             $(".card[data-id=" + data._id + "]").find(".card-" + key).text(data[key])
         }
+    },
+    genList: function (list) {
+        console.log(list)
+        var html = ''
+        for (var key in list) {
+            html += `<div class="form-group task-list" data-listname="${key}">
+                <editable-content class="list-name" contenteditable="true">List name ${key}</editable-content>`
+            list[key].map((el) => {
+                html += ` <p><input type="checkbox" id="${key}" name="data_list" data-field="${key}" value="${el}">
+                <label for="${key}">${el}</label>
+                </p>`
+
+            })
+            html += `<input type="text" class="form-control mb-3 task-field" name="task"></div>`
+        }
+
+        $('#add_card .modal-body .add_list').before(html)
     }
 }
+
+
+$('#add_card').on('hidden.bs.modal', function () {
+    Card.reset($('#add_card'))
+})
 
 addBtn.click(function (e) {
     e.preventDefault();
@@ -122,24 +154,25 @@ deleteBtn.click(function () {
             else return
         });
 })
-$(document).on('click', '.card', function(){
+$(document).on('click', '.card', function () {
     var id = $(this).data('id')
     Card.get(id)
 })
 
 $('.add_list').click(function () {
-    $(this).before(`<div class="form-group"><editable-content class='list-name'>List name</editable-content><input type="text" class="form-control mb-3 task-field" name="task"></div>`)
+    var listname = rand()
+    $(this).before(`<div class="form-group task-list" data-listname="${listname}"><editable-content class='list-name'>List name ${listname}</editable-content><input type="text" class="form-control mb-3 task-field" name="task"></div>`)
 })
 
 function rand() {
     return Math.floor(Math.random() * 9999)
 }
 $(document).on('keydown', '.task-field', function (e) {
-    var id = rand()
-    console.log(id)
+    var listname = $(this).closest('.form-group').data('listname')
     if (e.keyCode == 13) {
+        var id = rand()
         e.preventDefault()
-        $(this).before(`<p><input type="checkbox" id="${id}" name="${id}"><label for="${id}">${$(this).val()}</label></p>`)
+        $(this).before(`<p><input type="checkbox" id="${id}" name="data_list" data-field="${listname}" value="${$(this).val()}"><label for="${id}">${$(this).val()}</label></p>`)
         $(this).val('')
     }
 })
@@ -152,8 +185,8 @@ var sortable = Sortable.create(el, {
 });
 
 //const element = document.querySelector('.list-name');
-$(document).on('edit', '.list-name', function(e){
-  console.log(e.target.innerHTML); // the new value
+$(document).on('edit', '.list-name', function (e) {
+    console.log(e.target.innerHTML); // the new value
     console.log(e.target.previousInnerHTML); // old value
 })
 
