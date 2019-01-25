@@ -4,6 +4,43 @@
 .list-name {
     font-weight: 500;
     font-size: 18px;
-    margin-bottom: 5px;
+    margin-bottom: 25px;
     display: inline-block;
+}
+
+input[type=checkbox] {
+    position: absolute;
+    left: -9999px;
+}
+input[type=checkbox] + label {
+    position: relative;
+    padding-left: 30px;
+}
+input[type=checkbox] + label::before {
+    position: absolute;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #1984ff;
+    left: 0;
+    top: 2px;
+}
+
+input[type=checkbox] + label::after {
+    position: absolute;
+    content: '✓';
+    color: #1984ff;
+    left: 5px;
+    top: -12px;
+    font-weight: 600;
+    font-size: 25px;
+    transform: scale(0);
+    transition: all .3s;
+}
+input[type=checkbox]:checked + label {
+    color: #989898;
+}
+input[type=checkbox]:checked + label::after {
+    transform: scale(1);
 }

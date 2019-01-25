@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
  //   db.collection('cards').createIndex({'index': 1})
-    var cursor = db.collection('cards').find().sort({ 'index': 1 }).toArray((err, result) => {
+    var cursor = db.collection('cards').find().toArray((err, result) => {
         console.log(result)
         res.render('index.ejs', { cards: result });
     })
