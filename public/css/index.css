@@ -1,22 +1,50 @@
 .emptyval {
     border-color: red !important;
 }
+.card {
+    cursor: pointer;
+}
 .list-name {
     font-weight: 500;
     font-size: 18px;
     margin-bottom: 25px;
     display: inline-block;
 }
-
+.task-list {
+    background: #f1f1f1;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+.task-list .handle {
+    float: right;
+    transform: rotate(90deg);
+    font-size: 20px;
+    color: #797979;
+    cursor: move;
+}
+.task-list .task {
+    display: inline-block;
+    min-width: 86%;
+    min-height: 20px;
+    margin-left: 30px;
+    max-width: 86%;
+}
+.ghost {
+    opacity: .5;
+    background: rgb(190, 190, 190);
+  }
 input[type=checkbox] {
     position: absolute;
-    left: -9999px;
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    z-index: 100;
 }
-input[type=checkbox] + label {
-    position: relative;
-    padding-left: 30px;
+input[type=checkbox] + .checkbox {
+    position: absolute;
 }
-input[type=checkbox] + label::before {
+input[type=checkbox] + .checkbox::before {
     position: absolute;
     content: '';
     width: 20px;
@@ -27,7 +55,7 @@ input[type=checkbox] + label::before {
     top: 2px;
 }
 
-input[type=checkbox] + label::after {
+input[type=checkbox] + .checkbox::after {
     position: absolute;
     content: '✓';
     color: #1984ff;
@@ -38,9 +66,34 @@ input[type=checkbox] + label::after {
     transform: scale(0);
     transition: all .3s;
 }
-input[type=checkbox]:checked + label {
+input[type=checkbox]:checked + .checkbox + .task {
     color: #989898;
 }
-input[type=checkbox]:checked + label::after {
+input[type=checkbox]:checked + .checkbox::after {
     transform: scale(1);
+}
+
+.btn-success {
+    background: #00bbce;
+    border-color: #00bbce;
+}
+.btn-success:hover {
+    background: #00ce89;
+    border-color: #00ce89;
+}
+.btn-danger {
+    background: #d41a3c;
+    border-color: #d41a3c;
+}
+.btn-warning {
+    background: #ff9900;
+    border-color: #ff9900;
+    color: #fff;
+}
+.btn-warning:hover {
+    color: #fff;
+}
+.navbar-brand {
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }

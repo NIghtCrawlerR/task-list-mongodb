@@ -17,9 +17,8 @@ app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
- //   db.collection('cards').createIndex({'index': 1})
-    var cursor = db.collection('cards').find().toArray((err, result) => {
-        console.log(result)
+    //   db.collection('cards').createIndex({'index': 1})
+    var cursor = db.collection('cards').find().sort({ 'index': 1 }).toArray((err, result) => {
         res.render('index.ejs', { cards: result });
     })
 })
@@ -44,18 +43,25 @@ app.post('/cards', jsonParser, (req, res) => {
 app.put('/cards/:id', jsonParser, (req, res) => {
     if (!req.body) return res.sendStatus(400);
     const id = new objectId(req.params.id)
-    console.log(id)
     var data = req.body.data
     db.collection('cards').findOneAndUpdate({ _id: id }, { $set: data }, { returnOriginal: false }, (err, result) => {
         res.send(result.value)
     })
 })
 
+//save cards order
+app.put('/cards', jsonParser, (req, res) => {
+    if (!req.body) return res.sendStatus(400);
+    req.body.map((id, i) => {
+        db.collection('cards').findOneAndUpdate({ _id: objectId(id) }, { $set: { 'index': i } })
+    })
+})
+
 app.delete('/cards/:id', (req, res) => {
     console.log(req.params.id)
-    const id = new objectId(req.params.id);    
+    const id = new objectId(req.params.id);
     db.collection('cards').findOneAndDelete({ _id: id }, function (err, result) {
-        if(err) return console.log(err)
+        if (err) return console.log(err)
         res.send(result)
     })
 })
