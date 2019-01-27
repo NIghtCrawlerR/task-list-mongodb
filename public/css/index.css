@@ -16,7 +16,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 4px;
 }
-.task-list .handle {
+.handle {
     float: right;
     transform: rotate(90deg);
     font-size: 20px;
@@ -96,4 +96,11 @@ input[type=checkbox]:checked + .checkbox::after {
 .navbar-brand {
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+[data-checked=checked] {
+    display: none
+}
+.tasks-track{
+    float: right;
 }

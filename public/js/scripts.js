@@ -1,9 +1,7 @@
 //Events
-
 $('#add_card').on('hidden.bs.modal', function () {
     Card.reset($('#add_card'))
 })
-
 $(document).on('click', '.show-form', function (e) {
     $('#add_card .modal-title').text('New card')
     $(".for-add").show();
@@ -59,10 +57,14 @@ $(document).on('keydown', '.task-field', function (e) {
         var id = rand()
         e.preventDefault()
         $(this).before(`<p><input type="checkbox" name="data_list" data-field="${listname}" data-task="${$(this).val()}" value="0">
-        <span class="checkbox"><span>
-        <editable-content class="task">${$(this).val()}</editable-content><button type="button" class="close delete-task"><span>&times;</span></button></p>`)
+        <span class="checkbox"></span>
+        <editable-content class="task">${$(this).val()}</editable-content>
+        <button type="button" class="close delete-task"><span>&times;</span></button></p>`)
         $(this).val('')
     }
+})
+$(document).on('click', '.toggle_hidden', function(){
+    $(this).closest('.task-list').find('[data-checked=checked]').toggle()
 })
 
 
@@ -72,11 +74,17 @@ function rand() {
 }
 
 function sortableList() {
-    var list = document.querySelector('.task-list-wrap');
-    var sortable = Sortable.create(list, {
+    var listWrap = document.querySelector('.task-list-wrap');
+    var sortable = Sortable.create(listWrap, {
         handle: '.handle',
         ghostClass: 'ghost',
     });
+    // var list = document.querySelector('.task-list');
+    // var sortable2 = Sortable.create(list, {
+    //     group: 'taskList',
+    //     handle: '.handle',
+    //     ghostClass: 'ghost',
+    // });
 }
 function sortableCards() {
     var el = document.querySelector('.cards');
@@ -91,10 +99,9 @@ function sortableCards() {
                     method: "PUT",
                     data: JSON.stringify(order),
                     success: function (data) {
-                        
+
                     }
                 })
-                console.log(order)
             }
         }
     });
