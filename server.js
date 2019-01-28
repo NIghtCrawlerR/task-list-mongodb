@@ -6,7 +6,8 @@ const express = require('express'),
     objectId = require("mongodb").ObjectID
 
 //Connect database
-var dbUrl = 'mongodb://NightCrawler:F9V6U0XxMmOZEVeA@ds137404.mlab.com:37404/chat'
+//var dbUrl = 'mongodb://NightCrawler:F9V6U0XxMmOZEVeA@ds137404.mlab.com:37404/chat'
+var dbUrl = 'mongodb://NightCrawler:F9V6U0XxMmOZEVeA@ds141284.mlab.com:41284/task-app'
 var db
 
 
@@ -68,7 +69,7 @@ app.delete('/cards/:id', (req, res) => {
 
 MongoClient.connect(dbUrl, { useNewUrlParser: true }, (err, client) => {
     if (err) return console.log(err)
-    db = client.db('chat')
+    db = client.db('task-app')
     app.listen(3000, function () {
         console.log('listening on *:3000');
     });

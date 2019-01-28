@@ -74,12 +74,24 @@ var Card = {
             data[$(this).data('field')] = val
         });
         //get data from lists
-        data['list'] = {}
-        $(list).each(function () {
-            var fName = $(this).data('field')
-            if (data['list'][fName] == undefined) data['list'][fName] = [[$(this).data('task'), $(this).val()]]
-            else data['list'][fName].push([$(this).data('task'), $(this).val()])
+        data['list'] = []
+        var arr = []
+        $('.task-list').each(function () {
+            var list = {}
+            var fName = $(this).data('listname')
+            list[fName] = []
+            $(this).find('[name=data_list]').each(function () {
+                list[fName].push([$(this).data('task'), $(this).val()])
+            })
+            data['list'].push(list)
         })
+        // $(list).each(function () {
+        //     var fName = $(this).data('field')
+        //     if (data['list'][fName] == undefined) data['list'][fName] = [[$(this).data('task'), $(this).val()]]
+        //     else data['list'][fName].push([$(this).data('task'), $(this).val()])
+        // })
+        console.log(data)
+
         if (invalid) return !1
         return data
     },
@@ -105,28 +117,32 @@ var Card = {
         }
     },
     genList: function (list) {
-        var html = '',
-            tasks = 0,
-            cTasks = 0
-        for (var key in list) {
-            html += `<div class="form-group task-list" data-listname="${key}"><div class="handle">|||</div>
-                <editable-content class="list-name" contenteditable="true">${key}</editable-content>`
-            list[key].map((el, i) => {
-                var checked = el[1] == 1 ? 'checked' : ''
-                tasks++
-                if(el[1] == 1) cTasks ++
-                html += ` <p class="${checked}" data-checked="${checked}">
+        var html = ''
+        list.map((l) => {
+            for (var key in l) {
+                var cTasks = 0
+                html += `<div class="form-group task-list" data-listname="${key}"><div class="handle">|||</div>
+                <editable-content class="list-name" contenteditable="true">${key}</editable-content>
+                <div class="task-list-body">`
+                l[key].map((el, i) => {
+                    var checked = el[1] == 1 ? 'checked' : ''
+                    if (el[1] == 1) cTasks++
+                    html += ` <p class="${checked}" data-checked="${checked}">
+                   
                 <input type="checkbox" name="data_list" data-field="${key}" data-task="${el[0]}" value="${el[1]}" ${checked}>
                 <span class="checkbox"></span>
                 <editable-content class="task">${el[0]}</editable-content>
-                <button type="button" class="close delete-task"><span>&times;</span></button>
+                <button type="button" class="close delete-task"><span>&times;</span></button> 
                 </p>`
-            })
-            html += `<input type="text" class="form-control mb-3 task-field" name="task" placeholder="Add task...">
+                })
+                html += `</div><input type="text" class="form-control mb-3 task-field" name="task" placeholder="Add task...">
             <button type="button" class="btn btn-sm btn-link toggle_hidden">Toggle hidden</button>
-            <p class="tasks-track">${cTasks} of ${tasks}</p>
+            <button type="button" class="btn btn-sm btn-link btn-link-danger remove_list">Remove list</button>
+            <p class="tasks-track"><span class="closed-tasks">${cTasks}</span> of ${l[key].length}</p>
             </div>`
-        }
+            }
+        })
+
 
         $('#add_card .modal-body .add_list').before(html)
     }

@@ -20,8 +20,14 @@ $(document).on('click', '.delete-task', function () {
     $(this).closest('p').remove();
 })
 $(document).on('change', '[name=data_list]', function () {
+    //track checked or not
     var bool = $(this).prop('checked') ? 1 : 0
     $(this).val(bool)
+
+    //change checked tasks quantity 
+    var thatList = $(this).closest('.task-list')
+    var cTask = parseInt(thatList.find('.closed-tasks').text())
+    thatList.find('.closed-tasks').text(bool == 1 ? cTask++ : cTask--)
 })
 $(document).on('click', '.card', function () {
     var id = $(this).data('id')
@@ -56,15 +62,18 @@ $(document).on('keydown', '.task-field', function (e) {
     if (e.keyCode == 13) {
         var id = rand()
         e.preventDefault()
-        $(this).before(`<p><input type="checkbox" name="data_list" data-field="${listname}" data-task="${$(this).val()}" value="0">
+        $(this).closest('.task-list').find('.task-list-body').append(`<p><input type="checkbox" name="data_list" data-field="${listname}" data-task="${$(this).val()}" value="0">
         <span class="checkbox"></span>
         <editable-content class="task">${$(this).val()}</editable-content>
         <button type="button" class="close delete-task"><span>&times;</span></button></p>`)
         $(this).val('')
     }
 })
-$(document).on('click', '.toggle_hidden', function(){
+$(document).on('click', '.toggle_hidden', function () {
     $(this).closest('.task-list').find('[data-checked=checked]').toggle()
+})
+$(document).on('click', '.remove_list', function(){
+    $(this).closest('.task-list').remove()
 })
 
 
@@ -79,12 +88,12 @@ function sortableList() {
         handle: '.handle',
         ghostClass: 'ghost',
     });
-    // var list = document.querySelector('.task-list');
-    // var sortable2 = Sortable.create(list, {
-    //     group: 'taskList',
-    //     handle: '.handle',
-    //     ghostClass: 'ghost',
-    // });
+    var list = document.querySelector('.task-list-body');
+    var sortable2 = Sortable.create(list, {
+        group: 'taskList',
+        handle: '.handle',
+        ghostClass: 'ghost',
+    });
 }
 function sortableCards() {
     var el = document.querySelector('.cards');
@@ -124,3 +133,5 @@ function editable() {
         });
     })
 }
+
+
