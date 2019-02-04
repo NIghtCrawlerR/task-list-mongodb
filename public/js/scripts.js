@@ -76,6 +76,14 @@ $(document).on('click', '.remove_list', function(){
     $(this).closest('.task-list').remove()
 })
 
+$(document).on('click', '.add_badge', function(e){
+    e.preventDefault();
+    Badge.add('#add_badges')
+})
+$(document).on('click', '.badge .del', function(e){
+    e.preventDefault();
+    Badge.delete($(this).closest('.badge'))
+})
 
 //functions
 function rand() {
@@ -133,5 +141,9 @@ function editable() {
         });
     })
 }
+
+$('#badges').select2({
+    width: '100%'
+})
 
 

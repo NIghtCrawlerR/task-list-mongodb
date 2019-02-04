@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/select2.min.css">
     <link rel="stylesheet" href="css/index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
@@ -59,6 +61,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="title">Badges</label>
+                            <select name="badges" class="form-control" id="badges">
+                                <%if(badges){%>
+                                <% for(var i = 0; i < badges.length; i++) {%>
+                                <!-- <span><%=badges[i]['badges'][0][0]%></span> -->
+                                <%badges[i]['badges'].map((el)=>{%>
+                                <option value="<%=el[0]%>">
+                                    <%=el[0]%>
+                                </option>
+                                <%})%>
+                                <%}%>
+                                <%}%>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" name="data" data-field="title" id="title"
                                 placeholder="Title" required>
@@ -92,43 +109,55 @@
 
     <div class="modal fade" id="add_badges">
         <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add badges</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5 class="badges mb-3">
-                            <span class="badge badge-primary">Primary</span>
-                    </h5>
-                    <div class="form-group">
-                        <label for="title">Badge name</label>
-                        <input type="text" class="form-control" name="" id="title" placeholder="Title" required>
+            <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add badges</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="title">Badge color</label>
-                        <div>
-                            <input type="radio" id="red" name="color" value="red">
-                            <label for="red"></label>
-                            <input type="radio" id="green" name="color" value="green">
-                            <label for="green"></label>
-                            <input type="radio" id="yellow" name="color" value="yellow">
-                            <label for="yellow"></label>
+                    <div class="modal-body">
+                        <h5 class="badges mb-3">
+                            <%if(badges){%>
+                            <% for(var i = 0; i < badges.length; i++) {%>
+                            <!-- <span><%=badges[i]['badges'][0][0]%></span> -->
+                            <%badges[i]['badges'].map((el)=>{%>
+                            <span class="badge badge-<%=el[1]%> mr-1 mb-2" data-color="<%=el[1]%>" data-title="<%=el[0]%>">
+                                <%=el[0]%><span class='del'>✖</span></span>
+                            <%})%>
+                            <%}%>
+                            <%}%>
+                        </h5>
+                        <div class="form-group">
+                            <label for="title">Badge name</label>
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Title"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Badge color</label>
+                            <div>
+                                <% var colors = ['red', 'green', 'yellow', 'blue', 'pink', 'purple'] %>
+                                <% for(var i = 0; i < colors.length; i++) { %>
+                                <input type="radio" id="<%=colors[i]%>" name="color" value="<%=colors[i]%>">
+                                <label for="<%=colors[i]%>"></label>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary add_badge">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Add</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
+            </form>
+
         </div>
     </div>
     <!--END Modals-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="js/Sortable.js"></script>
+    <script src="js/select2.min.js"></script>
     <script src="js/editable.js"></script>
     <script src="js/index.js"></script>
     <script src="js/scripts.js"></script>

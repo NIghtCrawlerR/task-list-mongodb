@@ -1,3 +1,13 @@
+:root {
+    --badge-red: #fa004b;
+    --badge-yellow: #fbff04;
+    --badge-green: #1dd34a;
+    --badge-blue: #0486ff;
+    --badge-pink: #ff2ea1;
+    --badge-purple: #9b0e5c;
+    --badge-default: #b6b6b6;
+}
+
 .emptyval {
     border-color: red !important;
 }
@@ -84,15 +94,25 @@ input[type=radio] + label{
     height: 20px;
     background: #f1f1f1;
     margin-right: 10px;
+    cursor: pointer;
 }
 input[type=radio]#red + label {
-    background: #d31d1d;
+    background: var(--badge-red);
 }
 input[type=radio]#green + label {
-    background: #1dd34a;
+    background: var(--badge-green);
 }
 input[type=radio]#yellow + label {
-    background: #fbff04;
+    background: var(--badge-yellow);
+}
+input[type=radio]#blue + label {
+    background: var(--badge-blue);
+}
+input[type=radio]#pink + label {
+    background: var(--badge-pink);
+}
+input[type=radio]#purple + label {
+    background: var(--badge-purple);
 }
 input[type=radio]:checked + label {
     border: 2px solid #fff;
@@ -142,4 +162,56 @@ input[type=radio]:checked + label {
 }
 #add_badges .modal-header, #add_badges .modal-footer {
     border-color: #5f5f5f;
+}
+
+.badge {
+    position: relative;
+}
+.badge .del {
+    position: absolute;
+    content: '✕';
+    color: #000;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    top: -8px;
+    right: -8px;
+    font-size: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: all .2s;
+}
+.badge:hover .del {
+    opacity: 1;
+}
+
+.badge-red {
+    background: var(--badge-red)
+}
+.badge-yellow {
+    background: var(--badge-yellow)
+}
+.badge-green {
+    background: var(--badge-green)
+}
+.badge-blue {
+    background: var(--badge-blue)
+}
+.badge-pink {
+    background: var(--badge-pink)
+}
+.badge-purple {
+    background: var(--badge-purple)
+}
+.badge-undefined {
+    background: var(--badge-default)
+}
+
+.emptyval {
+    border: 1px solid red;
 }

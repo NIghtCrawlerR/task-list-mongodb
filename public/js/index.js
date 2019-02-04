@@ -85,13 +85,6 @@ var Card = {
             })
             data['list'].push(list)
         })
-        // $(list).each(function () {
-        //     var fName = $(this).data('field')
-        //     if (data['list'][fName] == undefined) data['list'][fName] = [[$(this).data('task'), $(this).val()]]
-        //     else data['list'][fName].push([$(this).data('task'), $(this).val()])
-        // })
-        console.log(data)
-
         if (invalid) return !1
         return data
     },
@@ -145,5 +138,40 @@ var Card = {
 
 
         $('#add_card .modal-body .add_list').before(html)
+    }
+}
+
+var Badge = {
+    add: function (formEl, color, text) {
+        var data = {};
+        $('#add_badges #title').toggleClass('emptyval', $('#add_badges #title').val() == '')
+        if($('#add_badges #title').val() == '') return !1
+        $.each($(formEl).find('form').serializeArray(), function (_, el) {
+            data[el.name] = el.value;
+        });
+        $('.badges').append(`<span class="badge badge-${data.color} mr-1 mb-2" data-color="${data.color}" data-title="${data.title}">${data.title}<span class='del'>✖</span></span>`)
+        $('#add_badges #title').val('')
+        this.update()
+    },
+    delete: function (badge) {
+        badge.remove()
+        this.update()
+    },
+    update: function () {
+        var badges = {
+            'badges': []
+        }
+        $('.badges .badge').each(function(){
+            badges['badges'].push([$(this).data('title'), $(this).data('color')])
+        })
+        $.ajax({
+            url: "badges",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify(badges),
+            success: function (data) {
+                console.log(data)
+            }
+        })
     }
 }

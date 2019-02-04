@@ -18,9 +18,14 @@ app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
+    var app = {}
     //   db.collection('cards').createIndex({'index': 1})
-    var cursor = db.collection('cards').find().sort({ 'index': 1 }).toArray((err, result) => {
-        res.render('index.ejs', { cards: result });
+    db.collection('cards').find().sort({ 'index': 1 }).toArray((err, result) => {
+        app['cards'] = result
+    })
+    db.collection('badges').find().sort({ 'index': 1 }).toArray((err, result) => {
+        app['badges'] = result
+        res.render('index.ejs', {cards: app['cards'], badges: app['badges']})
     })
 })
 
@@ -39,6 +44,14 @@ app.post('/cards', jsonParser, (req, res) => {
         if (err) return console.log(err);
         res.send(card);
     });
+})
+
+app.post('/badges', jsonParser, (req, res) => {
+    const id = new objectId('5c54964d08ebae10c00819d9')
+    let data = req.body
+    db.collection('badges').findOneAndUpdate({ type: 'badges' }, { $set: data }, { returnOriginal: false }, (err, result) => {
+        res.send(result.value)
+    })
 })
 
 app.put('/cards/:id', jsonParser, (req, res) => {
