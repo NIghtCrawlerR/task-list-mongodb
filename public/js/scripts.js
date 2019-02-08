@@ -72,15 +72,15 @@ $(document).on('keydown', '.task-field', function (e) {
 $(document).on('click', '.toggle_hidden', function () {
     $(this).closest('.task-list').find('[data-checked=checked]').toggle()
 })
-$(document).on('click', '.remove_list', function(){
+$(document).on('click', '.remove_list', function () {
     $(this).closest('.task-list').remove()
 })
 
-$(document).on('click', '.add_badge', function(e){
+$(document).on('click', '.add_badge', function (e) {
     e.preventDefault();
     Badge.add('#add_badges')
 })
-$(document).on('click', '.badge .del', function(e){
+$(document).on('click', '.badge .del', function (e) {
     e.preventDefault();
     Badge.delete($(this).closest('.badge'))
 })
@@ -143,7 +143,28 @@ function editable() {
 }
 
 $('#badges').select2({
-    width: '100%'
+    width: '100%',
+    templateSelection: formatSelected,
+    templateResult: formatResults,
+    maximumSelectionLength: 1
 })
 
+function formatResults (el) {
+    if(!el.element) return;
+    var $el = $(
+      '<span><span class="badge ' + el.element.classList[0] + '"></span> ' + el.text + '</span>'
+    );
+    return $el;
+  };
 
+function formatSelected(el) {
+    if(!el.element) return;
+    var $el = $(
+        '<span class="badge ' + el.element.classList[0] + '">' + el.text + '</span>'
+    );
+    return $el;
+};
+
+$(document).on('change', '#badges', function(){
+    console.log($(this).val())
+})

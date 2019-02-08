@@ -40,6 +40,9 @@
                     <p class="card-descr">
                         <%= cards[i].descr %>
                     </p>
+                    <h5 class="badges"><span class="badge badge-<%=cards[i].badges[0].split(',')[0]%>">
+                        <%=cards[i].badges[0].split(',')[1]%>
+                    </span></h5>
                 </div>
             </div>
             <% } %>
@@ -62,12 +65,12 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="title">Badges</label>
-                            <select name="badges" class="form-control" id="badges">
+                            <select name="data" data-field="badges" multiple="multiple" value="" class="form-control" id="badges">
                                 <%if(badges){%>
                                 <% for(var i = 0; i < badges.length; i++) {%>
                                 <!-- <span><%=badges[i]['badges'][0][0]%></span> -->
                                 <%badges[i]['badges'].map((el)=>{%>
-                                <option value="<%=el[0]%>">
+                                <option value="<%=el[0]%>, <%=el[1]%>" class="badge-<%=el[1]%>">
                                     <%=el[0]%>
                                 </option>
                                 <%})%>

@@ -47,8 +47,11 @@ var Card = {
             method: 'GET',
             success: function (data) {
                 cardId = data._id
+                console.log(data.badges)
                 for (var key in data) {
                     $('#add_card').find("input[data-field=" + key + "], textarea[data-field=" + key + "]").val(data[key])
+                    $('#add_card').find("select[data-field=" + key + "]")
+                    $('#badges').select2('val', data.badges);
                 }
                 if (data.hasOwnProperty('list')) Card.genList(data['list'])
                 $('#add_card').modal('show')
@@ -71,8 +74,10 @@ var Card = {
             }
             var val = $(this).val()
             if ($(this).data('field') == 'index') { val = parseInt(val) }
+           // if ($(this).data('field') == 'badges') { val = JSON.parse(val) }
             data[$(this).data('field')] = val
         });
+        console.log(data)
         //get data from lists
         data['list'] = []
         var arr = []

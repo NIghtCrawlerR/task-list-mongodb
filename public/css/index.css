@@ -189,7 +189,9 @@ input[type=radio]:checked + label {
 .badge:hover .del {
     opacity: 1;
 }
-
+.badge {
+    color: #fff;
+}
 .badge-red {
     background: var(--badge-red)
 }
@@ -210,6 +212,12 @@ input[type=radio]:checked + label {
 }
 .badge-undefined {
     background: var(--badge-default)
+}
+
+.badge:empty {
+    display: inline-block !important;
+    width: 20px;
+    height: 10px;
 }
 
 .emptyval {
